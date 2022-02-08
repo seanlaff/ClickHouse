@@ -95,6 +95,20 @@ RUN add-apt-repository ppa:ubuntu-toolchain-r/test --yes \
     && apt-get install gcc-11 g++-11 --yes \
     && apt-get clean
 
+# Architecture of the image when BuildKit/buildx is used
+ARG TARGETARCH
+ARG NFPM_VERSION=2.13.1
+
+# It depends on: https://github.com/google/rpmpack/pull/72
+#RUN arch=${TARGETARCH:-amd64} \
+#  && curl -Lo /tmp/nfpm.deb "https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${arch}.deb" \
+#  && dpkg -i /tmp/nfpm.deb \
+#  && rm /tmp/nfpm.deb
+
+# Remove and uncomment the top after https://github.com/google/rpmpack/pull/72 is merged
+RUN arch=${TARGETARCH:-amd64} \
+  && curl -Lo /usr/bin/nfpm "https://github.com/ClickHouse-Extras/nfpm/releases/download/v${NFPM_VERSION}/nfpm_linux_${arch}" \
+  && chmod +x /usr/bin/nfpm
 
 COPY build.sh /
 CMD ["bash", "-c", "/build.sh 2>&1 | ts"]
