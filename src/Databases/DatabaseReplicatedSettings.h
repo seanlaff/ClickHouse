@@ -13,6 +13,7 @@ class ASTStorage;
     M(UInt64, wait_entry_commited_timeout_sec, 3600, "Replicas will try to cancel query if timeout exceed, but initiator host has not executed it yet", 0) \
     M(String, cluster_username, "default", "Username to use when connecting to hosts of cluster", 0) \
     M(String, cluster_password, "", "Password to use when connecting to hosts of cluster", 0) \
+    M(String, cluster_secret, "", "Cluster secret to use", 0) \
     M(Bool, cluster_secure_connection, false, "Enable TLS when connecting to hosts of cluster", 0) \
 
 DECLARE_SETTINGS_TRAITS(DatabaseReplicatedSettingsTraits, LIST_OF_DATABASE_REPLICATED_SETTINGS)

@@ -125,7 +125,8 @@ Cluster::Address::Address(
     bool secure_,
     Int64 priority_,
     UInt32 shard_index_,
-    UInt32 replica_index_)
+    UInt32 replica_index_,
+    String cluster_secret_)
     : user(user_), password(password_)
 {
     bool can_be_local = true;
@@ -157,6 +158,7 @@ Cluster::Address::Address(
     is_local = can_be_local && isLocal(clickhouse_port);
     shard_index = shard_index_;
     replica_index = replica_index_;
+    cluster_secret_ = cluster_secret;
 }
 
 
@@ -530,7 +532,8 @@ Cluster::Cluster(
     bool treat_local_as_remote,
     bool treat_local_port_as_remote,
     bool secure,
-    Int64 priority)
+    Int64 priority,
+    String cluster_secret)
 {
     UInt32 current_shard_num = 1;
 
@@ -547,7 +550,8 @@ Cluster::Cluster(
                 secure,
                 priority,
                 current_shard_num,
-                current.size() + 1);
+                current.size() + 1,
+                cluster_secret);
 
         addresses_with_failover.emplace_back(current);
 
