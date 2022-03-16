@@ -106,7 +106,7 @@ def parse_env_variables(build_type, compiler, sanitizer, package_type, image_typ
 
     cxx = cc.replace('gcc', 'g++').replace('clang', 'clang++')
 
-    if image_type == "deb" or image_type == "tgz":
+    if image_type == "deb":
         result.append("DEB_CC={}".format(cc))
         result.append("DEB_CXX={}".format(cxx))
         # For building fuzzers
@@ -147,8 +147,10 @@ def parse_env_variables(build_type, compiler, sanitizer, package_type, image_typ
     elif cache == "distcc":
         result.append('DISTCC_HOSTS="{}"'.format("localhost/`nproc`"))
 
-    if alien_pkgs:
-        result.append("ALIEN_PKGS='" + ' '.join(['--' + pkg for pkg in alien_pkgs]) + "'")
+    result.append("ALIEN_PKGS='"tgz"')
+
+#    if alien_pkgs:
+#        result.append("ALIEN_PKGS='" + ' '.join(['--' + pkg for pkg in alien_pkgs]) + "'")
 
     if with_binaries == "programs":
         result.append('BINARY_OUTPUT=programs')
