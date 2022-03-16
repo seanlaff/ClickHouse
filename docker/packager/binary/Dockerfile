@@ -111,4 +111,4 @@ RUN arch=${TARGETARCH:-amd64} \
   && chmod +x /usr/bin/nfpm
 
 COPY build.sh /
-CMD ["bash", "-c", "/build.sh 2>&1 | ts"]
+CMD ["bash", "-c", "/build.sh 2>&1"]
