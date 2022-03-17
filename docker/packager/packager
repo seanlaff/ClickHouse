@@ -182,6 +182,8 @@ def parse_env_variables(
         result.append(f"SANITIZER={sanitizer}")
     if build_type:
         result.append(f"BUILD_TYPE={build_type}")
+    else:
+        result.append("BUILD_TYPE=None")
 
     if cache == "distcc":
         result.append(f"CCACHE_PREFIX={cache}")
