@@ -181,7 +181,7 @@ def parse_env_variables(
     if sanitizer:
         result.append(f"SANITIZER={sanitizer}")
     if build_type:
-        result.append(f"BUILD_TYPE={build_type}")
+        result.append(f"BUILD_TYPE={build_type.capitalize()}")
     else:
         result.append("BUILD_TYPE=None")
 
