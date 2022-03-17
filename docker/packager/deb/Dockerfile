@@ -75,6 +75,8 @@ RUN ln -s /usr/bin/lld-${LLVM_VERSION} /usr/bin/ld.lld \
     && ln -sf /usr/lib/llvm-${LLVM_VERSION}/bin/llvm-objcopy /usr/bin/aarch64-linux-gnu-objcopy \
     && ln -sf /usr/lib/llvm-${LLVM_VERSION}/bin/llvm-objdump /usr/bin/aarch64-linux-gnu-objdump
 
+ARG TARGETARCH
+ARG NFPM_VERSION=2.13.1
 RUN arch=${TARGETARCH:-amd64} \
   && curl -Lo /usr/bin/nfpm "https://github.com/ClickHouse-Extras/nfpm/releases/download/v${NFPM_VERSION}/nfpm_linux_${arch}" \
   && chmod +x /usr/bin/nfpm
