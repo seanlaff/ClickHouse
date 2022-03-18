@@ -1,7 +1,7 @@
 -- Tags: no-tsan, no-asan, no-ubsan, no-msan, no-debug, no-cpu-aarch64
 
 
-SELECT addressToLineWithInlines(1); -- { serverError 446 }
+SELECT addressToLineWithInlines(toUInt64(1)); -- { serverError 446 }
 
 SET allow_introspection_functions = 1;
 SET query_profiler_real_time_period_ns = 0;
