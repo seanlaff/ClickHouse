@@ -164,7 +164,7 @@ def parse_env_variables(
         cmake_flags.append("-DCMAKE_INSTALL_SYSCONFDIR=/etc")
         cmake_flags.append("-DCMAKE_INSTALL_LOCALSTATEDIR=/var")
         if is_release_build(build_type, package_type, sanitizer, split_binary):
-            cmake_flags.append("-DINSTALL_STRIPPED_BINARIES=OFF")
+            cmake_flags.append("-DINSTALL_STRIPPED_BINARIES=ON")
 
     result.append(f"CC={cc}")
     result.append(f"CXX={cxx}")
@@ -205,6 +205,7 @@ def parse_env_variables(
         result.append('DISTCC_HOSTS="localhost/`nproc`"')
 
     if additional_pkgs:
+        result.append("MAKE_APK=true")
         result.append("MAKE_RPM=true")
         result.append("MAKE_TGZ=true")
 
@@ -329,7 +330,7 @@ if __name__ == "__main__":
         args.output_dir = os.path.abspath(os.path.join(os.getcwd(), args.output_dir))
 
     image_type = "binary" if args.package_type == "performance" else args.package_type
-    image_name = f"clickhouse/{image_type}-builder"
+    image_name = "clickhouse/binary-builder"
 
     if not os.path.isabs(args.clickhouse_repo_path):
         ch_root = os.path.abspath(os.path.join(os.getcwd(), args.clickhouse_repo_path))
@@ -337,7 +338,7 @@ if __name__ == "__main__":
         ch_root = args.clickhouse_repo_path
 
     if args.additional_pkgs and image_type != "deb":
-        raise Exception("Can build tgz and rpm packages only in deb build")
+        raise Exception("Can build additional packages only in deb build")
 
     if args.with_binaries != "" and image_type != "deb":
         raise Exception("Can add additional binaries only in deb build")
