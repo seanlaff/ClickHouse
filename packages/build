@@ -132,11 +132,13 @@ echo -e "\nCurrent version is $CLICKHOUSE_VERSION_STRING"
 
 for config in clickhouse*.yaml; do
     echo "Building deb package for $config"
+
     # Preserve package path
     exec 9>&1
     PKG_PATH=$(nfpm package --target "$OUTPUT_DIR" --config "$config" --packager deb | tee /dev/fd/9)
-    exec 9>&-
     PKG_PATH=${PKG_PATH##*created package: }
+    exec 9>&-
+
     if [ -n "$MAKE_APK" ]; then
       echo "Building apk package for $config"
       nfpm package --target "$OUTPUT_DIR" --config "$config" --packager apk
