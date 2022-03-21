@@ -2194,7 +2194,10 @@ std::shared_ptr<Cluster> Context::tryGetCluster(const std::string & cluster_name
     if (res)
         return res;
     if (!cluster_name.empty())
+    {
+        std::cout << "Trying to get replicated database cluster..." << std::endl;
         res = tryGetReplicatedDatabaseCluster(cluster_name);
+    }
     return res;
 }
 

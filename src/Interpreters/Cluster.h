@@ -56,6 +56,7 @@ public:
         bool treat_local_port_as_remote,
         bool secure = false,
         Int64 priority = 1,
+        String cluster_name = "",
         String cluster_secret = "");
 
     Cluster(const Cluster &)= delete;
@@ -129,6 +130,7 @@ public:
             Int64 priority_ = 1,
             UInt32 shard_index_ = 0,
             UInt32 replica_index_ = 0,
+            String cluster_name = "",
             String cluster_secret_ = "");
 
         /// Returns 'escaped_host_name:port'

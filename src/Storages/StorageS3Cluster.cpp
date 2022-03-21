@@ -82,7 +82,14 @@ Pipe StorageS3Cluster::read(
 {
     StorageS3::updateClientAndAuthSettings(context, client_auth);
 
-    auto cluster = context->getCluster(cluster_name)->getClusterWithReplicasAsShards(context->getSettingsRef());
+    auto anime_cluster = context->getCluster(cluster_name);
+
+    std::cout << "StorageS3 anime secret " << anime_cluster->getSecret() << std::endl;
+
+    auto cluster = anime_cluster->getClusterWithReplicasAsShards(context->getSettingsRef());
+
+    std::cout << "StorageS3 secret " << cluster->getSecret() << std::endl;
+
     StorageS3::updateClientAndAuthSettings(context, client_auth);
 
     auto iterator = std::make_shared<StorageS3Source::DisclosedGlobIterator>(*client_auth.client, client_auth.uri);
@@ -106,6 +113,8 @@ Pipe StorageS3Cluster::read(
         /// There will be only one replica, because we consider each replica as a shard
         for (const auto & node : replicas)
         {
+            std::cout << "Iterating ... secret: " << node.cluster_secret << std::endl;
+
             auto connection = std::make_shared<Connection>(
                 node.host_name, node.port, context->getGlobalContext()->getCurrentDatabase(),
                 node.user, node.password, node.cluster, node.cluster_secret,

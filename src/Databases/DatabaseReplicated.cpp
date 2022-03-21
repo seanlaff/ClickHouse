@@ -110,8 +110,10 @@ std::pair<String, String> DatabaseReplicated::parseFullReplicaName(const String 
 ClusterPtr DatabaseReplicated::getCluster() const
 {
     std::lock_guard lock{mutex};
-    if (cluster)
-        return cluster;
+//    if (cluster)
+//        return cluster;
+
+    std::cout << "DatabaseReplicated::getCluster()" << std::endl;
 
     cluster = getClusterImpl();
     return cluster;
@@ -125,6 +127,10 @@ void DatabaseReplicated::setCluster(ClusterPtr && new_cluster)
 
 ClusterPtr DatabaseReplicated::getClusterImpl() const
 {
+    std::cout << "DatabaseReplicated::getClusterImpl()" << std::endl;
+    std::cout << StackTrace().toString() << std::endl;
+
+
     Strings hosts;
     Strings host_ids;
 
@@ -193,8 +199,11 @@ ClusterPtr DatabaseReplicated::getClusterImpl() const
 
     String username = db_settings.cluster_username;
     String password = db_settings.cluster_password;
+    String cluster_secret = db_settings.cluster_secret;
     UInt16 default_port = getContext()->getTCPPort();
     bool secure = db_settings.cluster_secure_connection;
+
+    std::cout << "Cluster secret " << cluster_secret << std::endl;
 
     bool treat_local_as_remote = false;
     bool treat_local_port_as_remote = getContext()->getApplicationType() == Context::ApplicationType::LOCAL;
@@ -206,7 +215,10 @@ ClusterPtr DatabaseReplicated::getClusterImpl() const
         default_port,
         treat_local_as_remote,
         treat_local_port_as_remote,
-        secure);
+        secure,
+        /*priority=*/1,
+        getDatabaseName(),
+        cluster_secret);
 }
 
 void DatabaseReplicated::tryConnectToZooKeeperAndInitDatabase(bool force_attach)

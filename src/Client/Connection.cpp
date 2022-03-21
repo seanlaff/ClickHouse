@@ -223,6 +223,8 @@ void Connection::sendHello()
     /// (NOTE we do not check for DBMS_MIN_REVISION_WITH_INTERSERVER_SECRET, since we cannot ignore inter-server secret if it was requested)
     if (!cluster_secret.empty())
     {
+        std::cout << "Sending cluster secret...." << std::endl;
+
         writeStringBinary(USER_INTERSERVER_MARKER, *out);
         writeStringBinary("" /* password */, *out);
 
@@ -236,6 +238,8 @@ void Connection::sendHello()
     }
     else
     {
+        std::cout << "Sending user and password..." << std::endl;
+
         writeStringBinary(user, *out);
         writeStringBinary(password, *out);
     }
